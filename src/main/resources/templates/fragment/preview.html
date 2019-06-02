@@ -1,0 +1,41 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<nav th:fragment="preview">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width: max-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Preview</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <!--Tasks-->
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Email</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Content</th>
+                                <th scope="col">Image</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td id="previewEmail"></td>
+                                <td id="previewUsername"></td>
+                                <td id="previewContent"></td>
+                                <td><img id="previewImage"/></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+</html>

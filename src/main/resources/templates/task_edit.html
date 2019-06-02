@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorator="layout">
+
+<head th:include="fragment/header::head(title='Edit task')"></head>
+<body>
+<p>
+    Welcome <span sec:authentication="principal.username"></span>
+</p>
+<p>
+    <a th:href="@{/tasks}">Go to Main Page</a>
+</p>
+<div class="container" style="text-align: center">
+    <form th:action="@{/admin/tasks/edit}" method="post" enctype="multipart/form-data" th:object="${task}">
+        <br>
+        <div class="form-group">
+                <textarea class="form-control" id="content" name="content" cols="50" th:field="${task.content}"
+                          rows="5"></textarea>
+
+        </div>
+        <div class="form-group">
+            <input type="checkbox" th:field=" ${task.edited}"/>
+        </div>
+        <input type="hidden" th:field="${task.id}"/>
+        <input type="submit" value="Submit" class="btn btn-primary mb-2"/>
+    </form>
+</div>
+</body>
+
+</html>

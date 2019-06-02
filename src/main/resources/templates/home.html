@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorator="layout" lang="en">
+<head th:include="fragment/header::head(title='Admin Home')"></head>
+<body>
+<div layout:fragment="content">
+
+    <p sec:authorize="hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')">
+        <a th:href="@{/logout}">Logout</a>
+    </p>
+
+    <p sec:authorize="!hasRole('ROLE_USER') || !hasRole('ROLE_ADMIN')">
+        <a th:href="@{/login}">Login</a>
+    </p>
+
+    <!--Tasks-->
+    <div class="container">
+        <div class="table table-bordered ">
+            <table class="table">
+                <thead data-toggle="table-dark">
+                <tr>
+                    <th scope="col">
+                        <a th:href="@{~/tasks(page=${pages.number},size=${pages.size},sort=(${pages?.sort?.getOrderFor('email')?.isAscending()} ? 'email,desc' : 'email,asc'))}">Email</a>
+
+                    </th>
+                    <th scope="col">
+                        <a th:href="@{~/tasks(page=${pages.number},size=${pages.size},sort=(${pages?.sort?.getOrderFor('username')?.isAscending()} ? 'username,desc' : 'username,asc'))}">username</a>
+                    </th>
+                    <th scope="col">
+                        <a th:href="@{~/tasks(page=${pages.number},size=${pages.size},sort=(${pages?.sort?.getOrderFor('content')?.isAscending()} ? 'content,desc' : 'content,asc'))}">Content</a>
+                    </th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Edited</th>
+                    <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')" >Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr scope="row" th:each="page: ${pages.content}">
+                    <td th:text="${page.email}"></td>
+                    <td th:text="${page.username}"></td>
+                    <td th:text="${page.content}"></td>
+                    <td>
+                        <img th:if="*{page.image != null && page.image.length >0}"
+                             th:src="@{'data:image/jpg;base64,' + *{T(org.springframework.util.Base64Utils).encodeToString(page.image)}}"/>
+                    </td>
+                    <td th:if="${page.edited == null || !page.edited}">false</td>
+                    <td th:if="${page.edited != null && page.edited}">true</td>
+
+
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a th:href="@{'/admin/tasks/' + ${page.id}}"><i class="glyphicon glyphicon-pencil"></i>  edit</a>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="fragment/pagination :: pagination" th:with="path='/tasks',pages=${pages}"></div>
+
+    <div class="container">
+        <div class="well well-sm">
+            <form action="#" th:action="@{/tasks}" method="post" enctype="multipart/form-data" th:object="${task}"
+                  id="taskForm">
+                <div class="form-group">
+                    <span class="text-danger" th:if="${#fields.hasErrors('username')}"
+                          th:text="#{error.username}"></span>
+                    <input type="text" class="form-control" placeholder="Username"
+                           th:field="${task.username}"/>
+                    <br>
+                    <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:text="#{error.email}"></span>
+                    <input type="email" class="form-control" placeholder="Email" th:field="${task.email}"/>
+                    <!-- Error Message -->
+                    <div th:if="${imageErrorMessage != null}">
+                        <h5 class="text-danger" th:text="${imageErrorMessage}"></h5>
+                    </div>
+                    <br>
+                    <span class="text-danger" th:if="${#fields.hasErrors('file')}"
+                          th:text="${#fields.errors('file').get(0)}"></span>
+                    <input type="file" class="form-control custom-file-input" placeholder="Image"
+                           th:field="${task.file}"/>
+                    <br>
+                    <div class="form-group">
+                        <span class="text-danger" th:if="${#fields.hasErrors('content')}"
+                              th:text="#{error.content}"></span>
+                        <textarea class="form-control" cols="50" th:field="${task.content}" rows="5">
+            </textarea>
+                    </div>
+                    <span class="text-danger" id="preview_error"></span>
+                    <div class="text-center">
+                        <input type="submit" value="Submit" class="btn btn-primary mb-2 btn-lg"/>
+                        <button type="button" id="preview_button" class="btn btn-info btn-lg">Preview</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="fragment/preview :: preview"></div>
+
+</body>
+</html>

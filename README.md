@@ -1,14 +1,23 @@
-Spring boot mysql jpa thymeleaf application skeleton
+####Used Technologies
 
-https://www.javaguides.net/2018/09/spring-boot-spring-mvc-role-based-spring-security-jpa-thymeleaf-mysql-tutorial.html
+Spring boot,
+Spring security,
+Spring data,
+Thymeleaf,
+Lombok,
+MapStruct,
+Tomcat,
+Heroku,
+Spring and maven profiles integration 
 
-To build application to heroku use 
+#### You can find application under
  
-####mvn heroku:deploy  -Prelease
+https://task2019.herokuapp.com/
+ 
+##### To build application to heroku use release profile 
+mvn heroku:deploy  -Prelease
 
-The command above using spring release profile and getting env variables
-
-
-##Roadmap
-***add centralized exception handling*** <br/>
-***See how to deal with optionals and functional interfaces***<br/>
+#### To connect application use 
+heroku logs --tail --app task2019
+ 
+ 

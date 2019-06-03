@@ -31,20 +31,6 @@ public class WebConfig implements WebMvcConfigurer {
         return messageSource;
     }
     
-    /**
-     * Disable tomcat file size check for handling it from controller
-     *
-     * @return bean
-     */
-    @Bean
-    public TomcatServletWebServerFactory containerFactory() {
-        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-        factory.addConnectorCustomizers((TomcatConnectorCustomizer)
-                connector -> ((AbstractHttp11Protocol<?>)
-                        connector.getProtocolHandler()).setMaxSwallowSize(-1));
-        return factory;
-    }
-    
     @Override
     @Bean
     public LocalValidatorFactoryBean getValidator() {
